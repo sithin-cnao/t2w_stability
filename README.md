@@ -11,6 +11,7 @@ Original repository supporting the article submitted to Physics and Imaging in R
 * Radiomics Feature Extraction using Pyradiomics
 * ComBat harmonization
 * Stability analysis
+* Statistical Analysis
 * Visualizations
 * Jupyter notebooks with usage examples
 
@@ -29,6 +30,7 @@ t2w_stability
 |          └── exampleMR_3mm.yaml             # NA
 │    └── feature_extraction3D.ipynb           # Jupyter notebook demonstrating feature extraction after subjecting T2w-fs/nfs image to image-level processing methods: N4 BFC, Normalization
 │    └── stability_analysis.ipynb             # Jupyter notebook presenting ComBat harmonization and CCC estimation of features
+│    └── statistical_analysis.ipynb           # Jupyter notebook presenting MC Power Analysis, Impact of TR, and regression analysis
 │    └── registration_gui.py, gui.py          # Utilities for image visualization copied from https://github.com/SimpleITK/TUTORIAL/blob/main/05_basic_registration.ipynb
 
 ├── LICENCE                                   # GNU General Public License v3.0
