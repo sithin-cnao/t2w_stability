@@ -1,5 +1,2 @@
-.*
-*/.*
-*/__*
-analysis/archive
-curation/archive
+archive
+outputs
