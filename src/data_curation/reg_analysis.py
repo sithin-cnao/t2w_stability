@@ -12,6 +12,7 @@ from concurrent.futures import ProcessPoolExecutor, as_completed
 NUM_WORKERS = 16
 
 #%%
+# tissue segmentation
 DATA_DIR = r"/home/thulasiseetha/research/dataset/curated/BrainMR"
 OUT_DIR = r"/home/thulasiseetha/research/sithin_projects/t2w_stability/outputs/data_curation/reg_analysis/data"
 
@@ -75,9 +76,6 @@ if __name__ == "__main__":
 
 #%%
 # reg_fs_tissue_mask vs independent_fs_tissue_mask
-
-
-
 DATA_DIR = r"/home/thulasiseetha/research/sithin_projects/t2w_stability/outputs/data_curation/reg_analysis/data"
 PARAM_FILE = "/home/thulasiseetha/research/sithin_projects/t2w_stability/src/paramSetting/StudySettings3D.yaml"
 OUT_DIR = r"/home/thulasiseetha/research/sithin_projects/t2w_stability/outputs/data_curation/reg_analysis"
@@ -95,7 +93,53 @@ ROI = {
 }
 TISSUE = "gwm"
 
+#%%
+# quality check
+reg_quality_df = {"pid":[], "dice":[], "hausdorff":[]}
 
+
+def calculate_metrics(pid):
+
+    reg_mask_file = os.path.join(DATA_DIR, pid, "reg_mask_tissue_seg.nii.gz")
+    independent_mask_file = os.path.join(DATA_DIR, pid, "mask_tissue_seg.nii.gz")
+
+    reg_mask = sitk.ReadImage(reg_mask_file)
+    independent_mask = sitk.ReadImage(independent_mask_file)
+
+    ind_tissue_mask = sum([sitk.BinaryThreshold(independent_mask, label, label, insideValue=True, outsideValue=False) for label in ROI[TISSUE]])
+    ind_tissue_mask = sitk.Cast(ind_tissue_mask, sitk.sitkUInt8)
+
+    reg_tissue_mask = sum([sitk.BinaryThreshold(reg_mask, label, label, insideValue=True, outsideValue=False) for label in ROI[TISSUE]])
+    reg_tissue_mask = sitk.Cast(reg_tissue_mask, sitk.sitkUInt8)
+
+
+    dice_score = sitk.LabelOverlapMeasuresImageFilter()
+    dice_score.Execute(ind_tissue_mask, reg_tissue_mask)
+    dice = dice_score.GetDiceCoefficient()
+
+    hausdorff_distance = sitk.HausdorffDistanceImageFilter()
+    hausdorff_distance.Execute(ind_tissue_mask, reg_tissue_mask)
+    hausdorff = hausdorff_distance.GetHausdorffDistance()
+
+    return {"pid":pid, "dice":dice, "hausdorff":hausdorff}
+
+if __name__ == "__main__":
+
+    pids = os.listdir(DATA_DIR)
+
+    reg_quality = []
+
+    with ProcessPoolExecutor(NUM_WORKERS) as e:
+        futures = [e.submit(calculate_metrics, pid) for pid in pids]
+        for future in tqdm(as_completed(futures), total=len(futures), desc="Calculating metrics", position=0):
+            metrics = future.result()
+            reg_quality.append(metrics)
+
+    reg_quality = pd.DataFrame(reg_quality)
+    reg_quality.to_csv(os.path.join(OUT_DIR, "reg_quality.csv"), index=False)
+
+#%%
+# radiomics feature extraction
 def extract_features(pid):
 
     featureVectors = []
@@ -132,3 +176,6 @@ if __name__=="__main__":
     radiomics_df = pd.DataFrame(radiomics_df)
     radiomics_df.to_csv(os.path.join(OUT_DIR, "radiomicsFeatures3D.csv"), index=False)
     
+#%%
+# ccc between reg vs. independent mask
+
