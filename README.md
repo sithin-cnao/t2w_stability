@@ -1,39 +1,45 @@
-# Evaluating the impact of fat-saturation on radiomics feature stability in brain T2-weighted Magnetic Resonance Imaging
+# Exploring the Impact of T2-weighted MRI Fat-Saturation on Radiomics Stability for Brain Radionecrosis Prediction after Skull-Base Proton Therapy: A Pilot Study
 
-Original repository supporting the article submitted to Physics and Imaging in Radiation Oncology journal (@Citation TBA)
+Original repository supporting the article submitted to Cancers [MDPI] (@Citation TBA)
 
 ### **Repository structure**
 #### **Overview:**
 
 * Automated skullstripping (brain extraction) and tissue segmentation methods
 * Rigid registration of segmentation using SimpleITK
-* Image-level Processing Methods: N4 BFC, Normalization
 * Radiomics Feature Extraction using Pyradiomics
-* ComBat harmonization
+* Image-level Processing Methods: N4 BFC, Normalization
+* Feature-level Processing Method: Combat
+* Optimal Processing Config Analysis
 * Stability analysis
+* BRN Prediction Analysis
 * Statistical Analysis
 * Visualizations
-* Jupyter notebooks with usage examples
+* Jupyter notebooks
+* Python Scripts
 
 #### **Contents:**
 ```
 t2w_stability
-├── curation                                  # Contains automatic brain, tissue segmentation methods explored; segmented mask coregistration >< T2w-fs and T2w-nfs
-│    └── tissue_segmentation_methods.ipynb    # Jupyter notebook demonstrating various combinations of automated brain extraction and tissue segmentation methods on T2w-nfs images  
-│    └── mask_curation.ipynb                  # Coregistration of segmented tissues to tumor-focalized T2w-fs images; Adjusting T2w-nfs images to match T2w-fs images
-│    └── registration_gui.py, gui.py          # Utilities for image visualization copied from https://github.com/SimpleITK/TUTORIAL/blob/main/05_basic_registration.ipynb
-
-├── analysis                                  # Radiomics Feature Extraction + Combat harmonization + CCC analysis
-│    └── paramSettings                        # Pyradiomics feature extraction setting file, originally copied from https://github.com/AIM-Harvard/pyradiomics/tree/master/examples/exampleSettings
-|          └── StudySettings3D.yaml           # This is the actual configuration file we used for feature extraction
-|          └── StudySettings3DVoxel.yaml      # NA
-|          └── exampleMR_3mm.yaml             # NA
-│    └── feature_extraction3D.ipynb           # Jupyter notebook demonstrating feature extraction after subjecting T2w-fs/nfs image to image-level processing methods: N4 BFC, Normalization
-│    └── stability_analysis.ipynb             # Jupyter notebook presenting ComBat harmonization and CCC estimation of features
-│    └── statistical_analysis.ipynb           # Jupyter notebook presenting MC Power Analysis, Impact of TR, and regression analysis
-│    └── registration_gui.py, gui.py          # Utilities for image visualization copied from https://github.com/SimpleITK/TUTORIAL/blob/main/05_basic_registration.ipynb
-
-├── LICENCE                                   # GNU General Public License v3.0
+├── src/                                   
+│    └── data_curation/                                         # Contains files associated with the data curation for the stability study
+|          └── mask_curation.ipynb                              # Generating T2w-nfs masks, rigid-registration of T2w-nfs to T2w-fs images
+|          └── tissue_segmentation_methods.ipynb                # All automatic brain, tissue segmentation methods explored;
+|          └── gui.py, registration_gui.py                      # Utility files
+│    └── paramSetting/
+|          └── StudySettings3D.yaml                             # Radiomics feature extraction settings for both stability study and BRN prediction modelling
+│    └── stability_analysis/
+|          └── feature_extraction3D.ipynb                       # Radiomics feature extraction from tissues
+|          └── stability_analysis.ipynb                         # Stability quantification using CCC
+|          └── config_analysis.py                               # Exploring 40 processing configurations, Uncertainty using Statistical Analysis
+|          └── utils.py, gui.py, registration_gui.py            # Utility files
+│    └── brn_prediction/
+|          └── data_prep.py                                     # Data preparation for BRN predictive modeling
+|          └── mask_gen.py                                      # Tissue mask generation independently for T2w-nfs and T2w-fs
+|          └── feature_gen.py                                   # Radiomics feature extraction from gwm tissue
+|          └── analysis.py                                      # 5-times repeated 5-fold cross-validation
+|          └── utils.py                                         # Utilities
+├── LICENCE                                                     # GNU General Public License v3.0
 ├── README.md
 
 ```
