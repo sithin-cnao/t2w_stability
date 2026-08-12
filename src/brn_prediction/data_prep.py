@@ -137,21 +137,4 @@ if __name__ == "__main__":
     display(sub_df_grp)
     
 
-#%%
 
-
-display(sub_df_grp)
-print("total = ", len(sub_df_grp))
-display(sub_df_grp.sequence.value_counts())
-display(sub_df_grp.BRN.value_counts())
-
-
-
-    
-
-
-# if __name__ == "__main__":
-#     main()
-
-
-# %%
