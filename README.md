@@ -1,6 +1,15 @@
 # Exploring the Impact of T2-weighted MRI Fat-Saturation on Radiomics Stability for Brain Radionecrosis Prediction after Skull-Base Proton Therapy: A Pilot Study
 
-Original repository supporting the article submitted to Cancers [MDPI] (@Citation TBA)
+Original repository supporting the article submitted to Cancers [MDPI]
+
+### **Citation**
+
+[Exploring the Impact of T2-Weighted MRI Fat Saturation on Radiomics Stability for Brain Radionecrosis Prediction After Skull-Base Proton Therapy: A Pilot Study](https://doi.org/10.3390/cancers18162636). *Cancers* **2026**, 18, 2636.
+
+
+>Thulasi Seetha, S.; Fontana, G.; Imparato, S.; Lillo, S.; Ciccone, L.P.; Achilli, M.F.; Paganelli, C.; Molinelli, S.; Iannalfi, A.; Baroni, G.; et al. Exploring the Impact of T2-Weighted MRI Fat Saturation on Radiomics Stability for Brain Radionecrosis Prediction After Skull-Base Proton Therapy: A Pilot Study. Cancers 2026, 18, 2636. https://doi.org/10.3390/cancers18162636
+
+
 
 ### **Repository structure**
 #### **Overview:**
